@@ -1,0 +1,27 @@
+<html>
+<head>
+<title>MBR-Dom test</title>
+<script src="dom.js"></script>
+<script>
+window.onload = function () {
+  var body = document.getElementsByTagName('body')[0];
+
+  mbr.dom('div', {
+    innerHTML: 'asd',
+    onclick: function (event) {
+      this.set({ innerHTML: 'asd2' });
+    }
+  })
+    .appendTo(body)
+    .on({
+      mouseover: function (event) {
+        this.set({ innerHTML: event.clientX });
+      },
+      mouseout: function() {
+        this.set({ innerHTML: 'asd' });
+      }
+    });
+}
+</script>
+</head>
+</html>

@@ -1,0 +1,23 @@
+{
+  "name": "mbr-dom",
+  "version": "1.0.0",
+  "description": "DOM manipulation utils",
+  "main": "dom.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MadBrozzeR/dom.git"
+  },
+  "keywords": [
+    "DOM",
+    "mbr-script"
+  ],
+  "author": "MadBrozzeR",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/MadBrozzeR/dom/issues"
+  },
+  "homepage": "https://github.com/MadBrozzeR/dom#readme"
+}
