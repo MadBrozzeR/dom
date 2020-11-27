@@ -45,7 +45,9 @@ var mbr = mbr || {};
 
   // ----------------------- DOM ----------------------------
   function DOM (element, attributes) {
+    this.document = element.documentElement;
     this.dom = element;
+    this.parent = null;
     this.listeners = {};
     this.set(attributes);
   }
@@ -54,10 +56,11 @@ var mbr = mbr || {};
     for (var index = 0 ; index < arguments.length ; ++index) {
       if (arguments[index] instanceof DOM) {
         this.dom.appendChild(arguments[index].dom);
+        arguments[index].parent = this.dom;
       } else if (arguments[index] instanceof HTMLElement) {
         this.dom.appendChild(arguments[index]);
       } else if (typeof arguments[index] === 'string') {
-        this.dom.appendChild(document.createTextNode(arguments[index]));
+        this.dom.appendChild(this.document.createTextNode(arguments[index]));
       } else {
         throw new Error('Unsupported element type');
       }
@@ -66,9 +69,48 @@ var mbr = mbr || {};
     return this;
   }
 
+  DOM.prototype.neighbour = function (left, right) {
+    var element;
+
+    if (left) {
+      if (left instanceof DOM) {
+        element = left.dom;
+        left.parent = this.parent;
+      } else if (left instanceof HTMLElement) {
+        element = left;
+      } else if (typeof left === 'string') {
+        element = this.document.createTextNode(left);
+      } else {
+        throw new Error('Unsupported element type');
+      }
+
+      this.dom.parentNode.insertBefore(element, this.dom);
+    }
+
+    if (right) {
+      if (right instanceof DOM) {
+        element = right.dom;
+        right.parent = this.parent;
+      } else if (right instanceof HTMLElement) {
+        element = right;
+      } else if (typeof right === 'string') {
+        element = this.document.createTextNode(right);
+      } else {
+        throw new Error('Unsupported element type');
+      }
+
+      if (this.dom.nextSibling) {
+        this.dom.parentNode.insertBefore(element, this.dom.nextSibling);
+      } else {
+        this.dom.parentNode.appendChild(element);
+      }
+    }
+  }
+
   DOM.prototype.appendTo = function (element) {
     if (element instanceof DOM) {
       element.append(this);
+      this.parent = element;
     } else if (element instanceof HTMLElement) {
       element.appendChild(this.dom);
     } else {
